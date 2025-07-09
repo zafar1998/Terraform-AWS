@@ -29,7 +29,7 @@ pipeline {
         stage('Plan') {
             steps {
                 script {
-                    sh 'terraform plan -var-file=../terraform/terraform.tfvars'
+                    sh 'terraform plan -var-file=terraform.tfvars'
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         stage('Apply') {
             steps {
                 script {
-                    sh 'terraform apply -auto-approve -var-file=../terraform/terraform.tfvars'
+                    sh 'terraform apply -auto-approve -var-file=terraform.tfvars'
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'terraform destroy -auto-approve -var-file=../terraform/terraform.tfvars'
+                    sh 'terraform destroy -auto-approve -var-file=terraform.tfvars'
                 }
             }
         }
