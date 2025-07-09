@@ -7,7 +7,6 @@ This repository contains Terraform code and a Jenkins pipeline for provisioning 
 Below is a sample architecture diagram representing the kind of AWS resources you can provision and manage with this repository.  
 _You can update the image with your actual architecture if needed._
 
-![AWS Architecture Example](https://raw.githubusercontent.com/aws-samples/aws-modern-application-workshop/master/images/architecture-overview.png)
 
 ## Repository Structure
 
@@ -15,8 +14,10 @@ _You can update the image with your actual architecture if needed._
 .
 ├── Jenkinsfile           # Jenkins pipeline definition
 ├── terraform.tfvars      # Terraform variables file (ensure this exists)
-├── main.tf               # Main Terraform configuration (example)
-├── variables.tf          # Terraform variables definition (example)
+├── main.tf               # Main Terraform configuration 
+├── variables.tf          # Terraform variables definition 
+├── provider.tf           # Terraform provider configuration 
+├── output.tf             # Terraform outputs definition 
 └── Readme.md             # Project documentation
 ```
 
