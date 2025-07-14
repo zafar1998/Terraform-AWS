@@ -18,6 +18,7 @@ _You can update the image with your actual architecture if needed._
 ├── variables.tf          # Terraform variables definition 
 ├── provider.tf           # Terraform provider configuration 
 ├── output.tf             # Terraform outputs definition 
+├── azure-pipeline.yml    # Azure DevOps pipeline definition for Terraform on AWS
 └── Readme.md             # Project documentation
 ```
 
@@ -64,6 +65,43 @@ The pipeline defined in `Jenkinsfile` performs the following stages:
 
 5. **Monitor the Pipeline**:
     - The pipeline will provision or destroy AWS resources based on your selection.
+
+## Azure DevOps Pipeline
+
+This repository also includes an Azure DevOps pipeline definition (`azure-pipeline.yml`) for provisioning and managing AWS infrastructure using Terraform.
+
+### Pipeline Features
+
+- **Automatic Trigger:** Runs on every push to the `main` branch.
+- **Terraform Tasks:** Installs Terraform, initializes the backend, plans, applies, and (optionally) destroys infrastructure.
+- **AWS Integration:** Uses an AWS service connection for authentication and state management.
+- **Conditional Destroy:** The `destroy` step runs only if the `destroyInfra` parameter is set to `true` at runtime.
+
+### Pipeline Parameters
+
+- **destroyInfra**: Boolean parameter. Set to `true` at runtime to enable the destroy step and tear down the infrastructure.
+
+### How to Use
+
+1. **Service Connection:**  
+   Create an AWS service connection in Azure DevOps named `AWS-Terraform-Service-Connection` with appropriate permissions.
+
+2. **Configure Pipeline:**  
+   - Place `azure-pipeline.yml` in the root of your repository.
+   - Adjust backend bucket/key/region as needed.
+
+3. **Run Pipeline:**  
+   - By default, the pipeline provisions infrastructure on every push to `main`.
+   - To destroy infrastructure, run the pipeline manually and set the `destroyInfra` parameter to `true`.
+
+### Example Pipeline Steps
+
+- **Terraform Init:** Initializes Terraform and configures the backend.
+- **Terraform Plan:** Previews infrastructure changes.
+- **Terraform Apply:** Applies the planned changes.
+- **Terraform Destroy:** (Optional) Destroys all managed infrastructure if enabled.
+
+---
 
 ## Notes
 

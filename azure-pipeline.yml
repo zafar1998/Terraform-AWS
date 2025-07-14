@@ -1,0 +1,54 @@
+parameters:
+  - name: destroyInfra
+    type: boolean
+    default: false  # Set true at runtime to enable destroy step
+
+trigger:
+  - main
+
+variables:
+  AWS_REGION: 'ap-south-1'
+
+pool: 
+ name: aws-ubuntu-pool
+
+steps:
+  - task: TerraformInstaller@0
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: TerraformTask@5
+    env:
+      AWS_REGION: 'ap-south-1'
+    inputs:
+      provider: 'aws'
+      command: 'init'
+      backendServiceAWS: 'AWS-Terraform-Service-Connection'
+      backendAWSBucketName: 'zafar-bucket-786'
+      backendAWSKey: 'dev/terraform.tfstate'
+      backendAWSRegion: 'ap-south-1' 
+
+  - task: TerraformTask@5
+    inputs:
+      provider: 'aws'
+      command: 'plan'
+      environmentServiceNameAWS: 'AWS-Terraform-Service-Connection'
+
+  - task: TerraformTask@5
+    inputs:
+      provider: 'aws'
+      command: 'apply'
+      environmentServiceNameAWS: 'AWS-Terraform-Service-Connection'
+  
+   # Terraform Destroy (Conditional)
+  - task: TerraformTask@5
+    displayName: 'Terraform Destroy (if enabled)'
+    condition: eq('${{ parameters.destroyInfra }}', true)
+    env:
+      AWS_REGION: $(AWS_REGION)
+    inputs:
+      provider: 'aws'
+      command: 'destroy'
+      environmentServiceNameAWS: 'AWS-Terraform-Service-Connection'
+
+  
